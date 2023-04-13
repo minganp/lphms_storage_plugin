@@ -1,0 +1,44 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lphmsstorageexample-dev-201244-authRole",
+      "UnauthRoleArn": "arn:aws:iam::344980224169:role/amplify-lphmsstorageexample-dev-201244-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::344980224169:role/amplify-lphmsstorageexample-dev-201244-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-lphmsstorageexample-dev-201244-deployment",
+      "UnauthRoleName": "amplify-lphmsstorageexample-dev-201244-unauthRole",
+      "StackName": "amplify-lphmsstorageexample-dev-201244",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:344980224169:stack/amplify-lphmsstorageexample-dev-201244/1ee85300-a232-11ed-840c-0a147530daca",
+      "AmplifyAppId": "d1f91ggnuem0ca"
+    },
+    "categories": {
+      "storage": {
+        "LHMS": {
+          "tableName": "LHMS",
+          "region": "ap-southeast-1",
+          "arn": "arn:aws:dynamodb:ap-southeast-1:344980224169:table/LHMS",
+          "partitionKeyName": "PK",
+          "partitionKeyType": "S",
+          "sortKeyName": "SK",
+          "sortKeyType": "S"
+        }
+      },
+      "auth": {
+        "lphmsstorageexample2ae5f723": {
+          "userPoolId": "ap-southeast-1_VP2L02XiH",
+          "userPoolName": "authpluginexample37a0f560_userpool_37a0f560-dev",
+          "webClientId": "1meikns45iholii4nggq1117hd",
+          "nativeClientId": "1meikns45iholii4nggq1117hd",
+          "identityPoolId": "ap-southeast-1:19291767-1b88-4337-a940-7dc32c87f4ae",
+          "identityPoolName": "authpluginexample37a0f560_identitypool_37a0f560__dev",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::344980224169:role/amplify-authpluginexample-dev-143149-authRole",
+          "authRoleName": "amplify-authpluginexample-dev-143149-authRole",
+          "unauthRoleArn": "arn:aws:iam::344980224169:role/amplify-authpluginexample-dev-143149-unauthRole",
+          "unauthRoleName": "amplify-authpluginexample-dev-143149-unauthRole"
+        },
+        "lphmsstorageexample7fbc2f18": {}
+      }
+    }
+  }
+}

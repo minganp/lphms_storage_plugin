@@ -1,0 +1,166 @@
+{
+  "api": {},
+  "auth": {
+    "lphmsstorageexample7fbc2f18": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_allowUnauthenticatedIdentities": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_authRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_authRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_identityPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_identityPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_unauthRoleArn": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_unauthRoleName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_auth_lphmsstorageexample2ae5f723_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "lphmsstorageexample2ae5f723"
+        }
+      ]
+    },
+    "AMPLIFY_storage_LHMS_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "LHMS"
+        }
+      ]
+    },
+    "AMPLIFY_storage_LHMS_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "LHMS"
+        }
+      ]
+    },
+    "AMPLIFY_storage_LHMS_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "LHMS"
+        }
+      ]
+    },
+    "AMPLIFY_storage_LHMS_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "LHMS"
+        }
+      ]
+    },
+    "AMPLIFY_storage_LHMS_sortKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "LHMS"
+        }
+      ]
+    },
+    "AMPLIFY_storage_LHMS_sortKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "LHMS"
+        }
+      ]
+    },
+    "AMPLIFY_storage_LHMS_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "LHMS"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "LHMS": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
+      "serviceType": "imported"
+    }
+  }
+}
