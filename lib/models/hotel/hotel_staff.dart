@@ -12,18 +12,18 @@ import '../../utility/uuid_generator.dart';
 
 class HotelStaff {
    String? pk;   //hotelId
-   String? sk;     //staff id:  ST#<staffID>
+   String? sk;     //staff id:  HS#<staffID>
    String? sna;   //surname
    String? gna;  //given name
    String? mph;  //mobile phone
-   String? hsp;  //position of the staff -RECEPTION -ADMIN -DEACTIVATE
+   Role? hsp;  //position of the staff -RECEPTION -ADMIN -DEACTIVATE
    String? cac;  //cognito account
    int? avl;
 
    HotelStaff({required this.pk, this.sk,this.cac,this.sna,this.gna,this.mph,this.hsp,this.avl});
-
-   HotelStaff.create({required String hotelId,required String surname,
-     String? givenName, String? mobile, required String position, String? account}){
+   //position: from Role,which declared in  position_enum file. value is hotelAdmin, hotelReception, hotelDeactivate
+   HotelStaff.create({required String hotelId,String? surname,
+     String? givenName, String? mobile, required Role position, String? account, required int? available}){
     pk = hotelId;
     sk = "${rPref[RecType.hotelStaff]}#${generateStaffId()}";
     sna = surname;
@@ -31,7 +31,7 @@ class HotelStaff {
     mph = mobile;
     hsp = position;
     cac = account;
-    avl = 0;
+    avl = available;
    }
 
    HotelStaff.fromLHMS(LHMS lhms){
@@ -40,13 +40,13 @@ class HotelStaff {
      sna = lhms.sna;
      gna = lhms.gna;
      mph = lhms.mph;
-     hsp = lhms.hsp;
+     hsp = roleFromString(lhms.hsp);
      cac = lhms.cac;
      avl = lhms.avl;
    }
 
     LHMS toLHMS(){
-      return LHMS(PK: pk!, SK: sk!, sna: sna, gna: gna, mph: mph, hsp: hsp, cac: cac, avl: avl);
+      return LHMS(PK: pk!, SK: sk!, sna: sna, gna: gna, mph: mph, hsp: hsp.toString(), cac: cac, avl: avl);
     }
 
     String toStr(){

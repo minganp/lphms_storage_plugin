@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 /*
 import 'package:lphms_storage_plugin/function/uuid_generator.dart';
@@ -90,13 +91,39 @@ class HotelInfo {
     lon = info.lon;
     addr = info.addr;
   }
-
+  HotelInfo.fromJson(json){
+    pk = json['pk'];
+    sk = json['sk'];
+    hna = json['hna'];
+    prov = json['prov'];
+    dis = json['dis'];
+    mph = json['mph'];
+    lat = json['lat'];
+    lon = json['lon'];
+    addr = json['addr'];
+  }
   String _genHotelId() {
     //if district code is null, generate hotel id with default district code
     //the default district code the first pk value of disLao(file lib/utility/prov_enum.dart)
     dis ??= disLao[0]['pk'];
     return "${rPref[RecType.hotel]}#$dis#${generateHotelId()}";
   }
+  Map<String,dynamic> toJson() =>
+     {
+      'pk':pk,
+      'sk':sk,
+      'hna':hna,
+      'prov':prov,
+      'dis':dis,
+      'mph':mph,
+      'lat':lat,
+      'lon':lon,
+      'addr':addr
+    };
+
+  toJsonString() => jsonEncode(toJson());
+
+      //'{"pk":"$pk","sk":"$sk","hna":"$hna","prov":"$prov","dis":"$dis","mph":"$mph","lat":$lat,"lon":$lon,"addr":"$addr"}';
 
   LHMS toLHMS(){
     return LHMS(PK: pk!,SK: sk!,hna: hna, prov: prov, dis: dis, mph: mph, lat: lat, lon: lon, addr: addr, GSI1: gsi1);
@@ -120,8 +147,24 @@ class HotelName {
     pk = info.PK;
     sk = info.SK;
   }
+
   LHMS toLHMS(){
     return LHMS(PK: pk, SK: sk,);
+  }
+}
+//hotel activated or not. only one record for each hotel.
+class HotelActivated {
+  String? pk; //hotel Id
+  String? sk; //HA#<True/False>
+  HotelActivated({required this.pk, required this.sk});
+
+  HotelActivated.fromLHMS(LHMS info){
+    pk = info.PK;
+    sk = info.SK;
+  }
+
+  LHMS toLHMS(){
+    return LHMS(PK: pk!, SK: sk!);
   }
 }
 
