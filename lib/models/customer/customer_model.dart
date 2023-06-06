@@ -1,6 +1,7 @@
 
-import 'package:amplify_datastore/amplify_datastore.dart';
 
+
+import 'package:amplify_flutter/amplify_flutter.dart';
 
 import '../../../models/LHMS.dart';
 import '../../../utility/position_enum.dart';
