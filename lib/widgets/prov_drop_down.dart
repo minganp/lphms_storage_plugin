@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../utility/position_enum.dart';
 import '../../utility/prov_enum.dart';
 import '../../utility/record_prefix.dart';
+import '../bak/utility/lang_enum.dart';
 //import 'package:lphms_storage_plugin/utility/position_enum.dart';
 //import 'package:lphms_storage_plugin/utility/prov_enum.dart';
 //import 'package:lphms_storage_plugin/utility/record_prefix.dart';
@@ -76,4 +77,49 @@ Widget provDropDown({String? prov,required ValueChanged<String> onSelected}){
         onSelected(val.value);
     },
   )));
+}
+
+class NationDropDown extends StatefulWidget{
+  const NationDropDown({super.key, required this.onSelected});
+  final ValueChanged<String?> onSelected;
+
+  @override
+  State<NationDropDown> createState() => _NationDropDownState();
+}
+
+class _NationDropDownState extends State<NationDropDown>{
+  var initValue = countryCode['LA'];
+  List<String> naList = [];
+  @override
+  initState() {
+    for (var element in countryCode.entries) {
+      naList.add(element.value);
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+  return SizedBox(
+      width: 280,
+      child: DropdownButton<String?>(
+            value: initValue,
+            elevation: 16,
+            underline: Container(
+              height: 0,
+            ),
+            items: naList.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value,style: const TextStyle(fontSize: 12),),
+              );
+            }).toList(),
+            onChanged: (val) {
+              String? key = countryCode.keys.firstWhere(
+                      (element) => countryCode[element] == val);
+              setState(() {initValue = val;});
+              widget.onSelected(key);
+            },
+          ));
+    }
 }

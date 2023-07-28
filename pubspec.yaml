@@ -15,7 +15,7 @@ dependencies:
   amplify_api: ^1.1.0
   intl: ^0.18.0
   dropdown_textfield: 1.0.8
-  device_info_plus: 8.2.2
+  device_info_plus: ^9.0.2
 
 dev_dependencies:
   flutter_test:
