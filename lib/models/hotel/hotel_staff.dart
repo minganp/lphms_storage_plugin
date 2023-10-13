@@ -12,7 +12,7 @@ import '../../utility/uuid_generator.dart';
 
 class HotelStaff {
    String? pk;   //hotelId
-   String? sk;     //staff id:  HS#<staffID>
+   String? sk;     //staff id:  HS_<staffID>
    String? sna;   //surname
    String? gna;  //given name
    String? mph;  //mobile phone
@@ -25,7 +25,7 @@ class HotelStaff {
    HotelStaff.create({required String hotelId,String? surname,
      String? givenName, String? mobile, required Role position, String? account, required int? available}){
     pk = hotelId;
-    sk = "${rPref[RecType.hotelStaff]}#${generateStaffId()}";
+    sk = "${rPref[RecType.hotelStaff]}$sp${generateStaffId()}";
     sna = surname;
     gna = givenName;
     mph = mobile;

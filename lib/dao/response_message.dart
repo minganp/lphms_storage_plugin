@@ -1,7 +1,7 @@
-class ResponseMessage{
+class ResponseMessage<T>{
   final String status;
   final String message;
-  late final dynamic data;
+  late T data;
 
   ResponseMessage({required this.status,required this.message,required this.data});
 

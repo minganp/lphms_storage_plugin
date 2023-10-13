@@ -13,6 +13,7 @@ dependencies:
   plugin_platform_interface: ^2.0.2
   amplify_flutter: ^1.1.0
   amplify_api: ^1.1.0
+  amplify_auth_cognito: ^1.1.0
   intl: ^0.18.0
   dropdown_textfield: 1.0.8
   device_info_plus: ^9.0.2

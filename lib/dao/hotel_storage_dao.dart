@@ -2,15 +2,16 @@ import 'dart:convert';
 
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:lphms_storage_plugin/dao/baseAmpApiDao.dart';
 import 'package:lphms_storage_plugin/dao/scripts/graphql_scripts.dart';
 import 'package:lphms_storage_plugin/dao/response_message.dart';
 import 'package:lphms_storage_plugin/utility/record_prefix.dart';
 
 import '../../models/LHMS.dart';
-import '../utility/position_enum.dart';
 import '../models/hotel/hotel_general_info.dart';
 import '../models/hotel/hotel_model.dart';
 import '../models/hotel/hotel_staff.dart';
+import 'lhms_base_dao.dart';
 
 class HotelPaginateQueryService {
   PaginatedResult<LHMS>? paginatedHotelsList;
@@ -29,7 +30,7 @@ class HotelPaginateQueryService {
       {required String dis, int limit = 100}) async {
     print("getHotelsByDis: $dis");
     QueryPredicateGroup criteria =
-        LHMS.QPK.beginsWith("HO#").and(LHMS.QSK.beginsWith('RI#'));
+        LHMS.QPK.beginsWith("HO#").and(LHMS.QSK.beginsWith("${rPref[RecType.hotelActivated]}#"));
     //QueryPredicate criteria = LHMS.QPK.beginsWith("HO#$dis");
     //reset hotelPageList and maxPage
     hotelPageList = {};
@@ -167,6 +168,39 @@ class HotelQueryService {
     }
     return hotelGeneralInfo;
   }
+  //for customer check in, get hotel info by hotel id
+  //sk is "HA#TRUE" or "HA#FALSE", that means hotel activate status
+  static Future<ResponseMessage> getHotelInfoById(
+      String hotelId,String sk) async {
+    //LHMS lhms;
+    ResponseMessage responseMessage =
+      await BaseAmpApiDao().queryLhms(script: getHotelInfo, args: {'PK':hotelId,'SK':sk});
+
+    /*
+    final request = ModelQueries.get(
+        LHMS.classType,
+        LHMSModelIdentifier(keys:{'PK': hotelId, 'SK': sk}));
+    try{
+      final response = await Amplify.API.query(request: request).response;
+      final data = response.data;
+      if(data == null){
+        return ResponseMessage(
+            status: 'fail',
+            message: 'Error: ${response.errors}', data: response.errors);
+      }else{
+        print("getHotelInfoById: $data");
+        lhms = data;
+        return ResponseMessage(
+            status: 'success',
+            message: 'Create new customer successfully', data: lhms);
+      }
+    }on ApiException catch(e){
+      return ResponseMessage(
+          status: 'fail', message: 'Error: ${e.message}', data: e.toString());
+    }
+     */
+    return responseMessage;
+  }
 
   //get hotel info by hotel name
   static Future<HotelInfo?> getHotelByName(String hotelName) async {
@@ -252,11 +286,13 @@ class HotelQueryService {
       final hotel = await operation;
       print(hotel.errors.toString());
       print("hotel: ${hotel.data}");
+
       if (hotel.data == null) return null;
       Map<String, dynamic> hotelMap = jsonDecode(hotel.data!);
       //if(hotel == null) return null;
       //if (hotel.items.isEmpty) return null;
       //return hotel.items[0]!.id;
+      if(hotelMap['lHMSByGSI1']['items'].length ==0) return null;
       print("hotelId:${hotelMap['lHMSByGSI1']['items'][0]['PK']}");
       return hotelMap['lHMSByGSI1']['items'][0]['PK'];
     } on ApiException catch (e) {
@@ -280,12 +316,6 @@ class HotelQueryService {
 class HotelStoreService {
   HotelStoreService();
 
-  //for hotel registration, save hotel info and hotel name in laos  language as default.
-  static Future<void> registerHotel(HotelInfo hotelInfo) async {
-    await _saveHotelForReg(hotelInfo);
-    await _saveHotelNameForReg(hotelInfo);
-  }
-
   //each new hotel registration will create 4 records in the database
   //1. hotel info
   //2. hotel name
@@ -293,10 +323,18 @@ class HotelStoreService {
   //4. hotel staff
   static Future<void> registerHotelGen(
       HotelGeneralInfo hotelGeneralInfo) async {
-    await _saveHotelForReg(hotelGeneralInfo.hotelInfo);
+    //write hotel information
+    await LhmsBaseDao.writeNewRecLHMS(hotelGeneralInfo.hotelInfo.toLHMS());
+
+    //write hotel Reg secret key(sk: uuid, gsi1: password)
+    await LhmsBaseDao.writeNewRecLHMS(hotelGeneralInfo.hotelRegInfo!.toLHMS());
+
+    //write hotel name record
     await _saveHotelNameForReg(hotelGeneralInfo.hotelInfo);
-    await _saveHotelActivateForReg(hotelGeneralInfo.hotelActivated!);
-    await _saveHotelStaff(hotelGeneralInfo.hotelStaffs[0]);
+
+    //await _saveHotelActivateForReg(hotelGeneralInfo.hotelActivated!);
+    //write hotel staff record
+    await LhmsBaseDao.writeNewRecLHMS(hotelGeneralInfo.hotelStaffs[0].toLHMS());
   }
 
   //for hotel update, save hotel info and hotel name in laos  language as default.
@@ -305,39 +343,14 @@ class HotelStoreService {
     await _saveHotelNameForUpdate(hotelInfo);
   }
 
-  static Future<void> _saveHotelForReg(HotelInfo hotelInfo) async {
-    try {
-      final request = ModelMutations.create(hotelInfo.toLHMS());
-      final response = await Amplify.API.mutate(request: request).response;
-      final created = response.data;
-      if (created == null) {
-        safePrint('errors: ${response.errors}');
-        return;
-      }
-      safePrint('Mutation result: ${hotelInfo.toString()}');
-    } on ApiException catch (e) {
-      safePrint('Mutation failed $e');
-    }
-  }
-
   static Future<void> _saveHotelNameForReg(HotelInfo hotelInfo) async {
     HotelName hotelName = HotelName.create(
         hotelId: hotelInfo.pk!, hotelName: hotelInfo.hna!, lang: "lo");
-    try {
-      final request = ModelMutations.create(hotelName.toLHMS());
-      final response = await Amplify.API.mutate(request: request).response;
-      final created = response.data;
-      if (created == null) {
-        safePrint('errors: ${response.errors}');
-        return;
-      }
-      safePrint('Mutation result: ${hotelName.toString()}');
-    } on ApiException catch (e) {
-      safePrint('Mutation failed $e');
-    }
+    await LhmsBaseDao.writeNewRecLHMS(hotelName.toLHMS());
   }
 
-  static Future<void> _saveHotelActivateForReg(
+  @Deprecated('Use HotelRegInfo instead')
+  static Future<void> saveHotelActivateForReg(
       HotelActivated hotelActivated) async {
     try {
       final request = ModelMutations.create(hotelActivated.toLHMS());
@@ -353,52 +366,16 @@ class HotelStoreService {
     }
   }
 
-  static Future<void> _saveHotelStaff(HotelStaff hotelStaff) async {
-    print('hotelStaff: ${hotelStaff.pk},${hotelStaff.sk},${hotelStaff.mph}');
-    try {
-      final request = ModelMutations.create(hotelStaff.toLHMS());
-      final response = await Amplify.API.mutate(request: request).response;
-      final created = response.data;
-      if (created == null) {
-        safePrint('errors: ${response.errors}');
-        return;
-      }
-      safePrint('Mutation result: ${hotelStaff.toString()}');
-    } on ApiException catch (e) {
-      safePrint('Mutation failed $e');
-    }
-  }
+  static Future<void> saveHotelStaff(HotelStaff hotelStaff) async =>
+      await LhmsBaseDao.writeNewRecLHMS(hotelStaff.toLHMS());
 
-  static Future _saveHotelForUpdate(HotelInfo hotelInfo) async {
-    try {
-      final request = ModelMutations.update(hotelInfo.toLHMS());
-      final response = await Amplify.API.mutate(request: request).response;
-      final updated = response.data;
-      if (updated == null) {
-        safePrint('errors: ${response.errors}');
-        return;
-      }
-      safePrint('Mutation result: ${hotelInfo.toString()}');
-    } on ApiException catch (e) {
-      safePrint('Mutation failed $e');
-    }
-  }
+  static Future _saveHotelForUpdate(HotelInfo hotelInfo) async =>
+      await LhmsBaseDao.writeNewRecLHMS(hotelInfo.toLHMS());
 
   static Future _saveHotelNameForUpdate(HotelInfo hotelInfo) async {
     HotelName hotelName = HotelName.create(
         hotelId: hotelInfo.pk!, hotelName: hotelInfo.hna!, lang: "lo");
-    try {
-      final request = ModelMutations.update(hotelName.toLHMS());
-      final response = await Amplify.API.mutate(request: request).response;
-      final updated = response.data;
-      if (updated == null) {
-        safePrint('errors: ${response.errors}');
-        return;
-      }
-      safePrint('Mutation result: ${hotelName.toString()}');
-    } on ApiException catch (e) {
-      safePrint('Mutation failed $e');
-    }
+    LhmsBaseDao.writeNewRecLHMS(hotelName.toLHMS());
   }
 
   //activate or deactivate hotel

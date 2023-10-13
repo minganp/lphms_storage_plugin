@@ -1,11 +1,10 @@
 //change log for hotel
 import '../../../models/LHMS.dart';
-import '../../utility/position_enum.dart';
 import '../../utility/record_prefix.dart';
 
 class HotelChangeLogs {
   String? pk; //hotelId
-  String? sk; //change log id:  CL#<datetime>#<actions>
+  String? sk; //change log id:  CL_<datetime>_<actions>
   String? clg; //change login string
   String? action;
 
@@ -20,7 +19,7 @@ class HotelChangeLogs {
       required String changeLogId,
       required String changeLogStr}) {
     pk = hotelId;
-    sk = "${rPref[RecType.changeLog]}#${DateTime.now()}#$action";
+    sk = "${rPref[RecType.changeLog]}$sp${DateTime.now()}$sp$action";
     clg = changeLogStr;
   }
 
@@ -39,6 +38,6 @@ class HotelChangeLogs {
   }
 
   String toStr() {
-    return "Change date: ${sk!.split('#')[1]}, Action: ${sk!.split('#')[2]}, Change log: $clg";
+    return "Change date: ${sk!.split(sp)[1]}, Action: ${sk!.split(sp)[2]}, Change log: $clg";
   }
 }

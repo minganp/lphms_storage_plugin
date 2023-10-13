@@ -67,3 +67,19 @@ const sActivateHotel = r'''
     }
   }
   ''';
+
+const getHotelInfo =  r'''
+  query GetLHMSItem($PK: String!, $SK: String!) {
+    getLHMS(PK: $PK,SK: $SK) {
+      PK
+      SK
+      hna
+      prov
+      dis
+      mph
+      lat
+      lon
+      addr
+    }
+   }
+  ''';

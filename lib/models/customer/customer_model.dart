@@ -20,13 +20,17 @@ class CustomerInfo{
    TemporalDate? doe;
    String? nt; //nation
 
-   //customer id : CU#<Document Type>#<Nation Code>#<Document ID>
-   final _cuInfoPattern = r"CU#(\w+)#(\w+)#([\w\d]+)";
+   //customer id : CU_<Document Type>_<Nation Code>_<Document ID>
+   final _cuInfoPattern = r"CU_(\w+)_(\w+)_([\w\d]+)";
 
-   //nation Id: NT#<Nation Code>
-   final _cuNcPattern = r"NT#(\w+)";
+   //nation Id: NT_<Nation Code>
+   final _cuNcPattern = r"NT_(\w+)";
 
-   CustomerInfo({ this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt});
+   CustomerInfo({ this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt});
+   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt}){
+      pk = genPk();
+   }
+
    CustomerInfo.fromLHMS(LHMS info){
       pk = info.PK;
       docID = getDocIdFromPK();
@@ -41,7 +45,10 @@ class CustomerInfo{
    }
 
    String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt}";
-   String genPk() => "${rPref[RecType.customer]}#$docType#$nt#$docID";
+   String genPk() => "${rPref[RecType.customer]}_${docType}_${nt}_$docID";
+
+   bool get isProfileComplete => pk!=null && docID!=null && docType!=null && nt!=null;
+   bool get isProfileFullyComplete => pk!=null && docID!=null && docType!=null && nt!=null;
 
    //get doc id from pk
    String? getDocIdFromPK() =>
@@ -63,7 +70,7 @@ class CustomerInfo{
    }
    LHMS toLHMSCuNt1(){
       LHMS lhms = LHMS(
-         PK: genPk(), SK: "${rPref[RecType.nation]}#$nt"
+         PK: genPk(), SK: "${rPref[RecType.nation]}$sp$nt"
       );
       return lhms;
    }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../utility/position_enum.dart';
 import '../../utility/prov_enum.dart';
 import '../../utility/record_prefix.dart';
-import '../bak/utility/lang_enum.dart';
+import '../utility/lang_enum.dart';
 //import 'package:lphms_storage_plugin/utility/position_enum.dart';
 //import 'package:lphms_storage_plugin/utility/prov_enum.dart';
 //import 'package:lphms_storage_plugin/utility/record_prefix.dart';
@@ -80,21 +80,27 @@ Widget provDropDown({String? prov,required ValueChanged<String> onSelected}){
 }
 
 class NationDropDown extends StatefulWidget{
-  const NationDropDown({super.key, required this.onSelected});
+  const NationDropDown({
+    super.key,
+    required this.onSelected,
+    this.initialValue = "LA",
+  });
   final ValueChanged<String?> onSelected;
-
+  //if initialValue is not null, the value must be countryCode.key
+  final String initialValue;
   @override
   State<NationDropDown> createState() => _NationDropDownState();
 }
 
 class _NationDropDownState extends State<NationDropDown>{
-  var initValue = countryCode['LA'];
+  late String initValue;
   List<String> naList = [];
   @override
   initState() {
     for (var element in countryCode.entries) {
       naList.add(element.value);
     }
+    initValue = countryCode[widget.initialValue] ?? countryCode['LA']!;
     super.initState();
   }
 
@@ -117,7 +123,7 @@ class _NationDropDownState extends State<NationDropDown>{
             onChanged: (val) {
               String? key = countryCode.keys.firstWhere(
                       (element) => countryCode[element] == val);
-              setState(() {initValue = val;});
+              setState(() {initValue = val!;});
               widget.onSelected(key);
             },
           ));
