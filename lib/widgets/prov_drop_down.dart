@@ -118,12 +118,14 @@ class _NationDropDownState extends State<NationDropDown>{
               return DropdownMenuItem<String>(
                 value: value,
                 alignment: Alignment.centerLeft,
-                child: Flexible(
-                  child:Container(
-                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
-                  child:Text(value,style: const TextStyle(fontSize: 12,),),
-              )),
-              );
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+                  child:Text(
+                    value,
+                    style: const TextStyle(fontSize: 12,),
+                    textAlign: TextAlign.left,
+                  ),
+              ));
             }).toList(),
             onChanged: (val) {
               String? key = countryCode.keys.firstWhere(
