@@ -1,7 +1,6 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 
-import '../../utility/position_enum.dart';
 import '../../utility/prov_enum.dart';
 import '../../utility/record_prefix.dart';
 import '../utility/lang_enum.dart';
@@ -117,6 +116,7 @@ class _NationDropDownState extends State<NationDropDown>{
             items: naList.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
+                alignment: Alignment.centerRight,
                 child: Text(value,style: const TextStyle(fontSize: 12),),
               );
             }).toList(),
