@@ -18,6 +18,7 @@ class CustomerInfo{
    TemporalDate? dob;
    String? sex;
    TemporalDate? doe;
+   TemporalDate? isd; //issue date
    String? nt; //nation
 
    //customer id : CU_<Document Type>_<Nation Code>_<Document ID>
@@ -26,8 +27,8 @@ class CustomerInfo{
    //nation Id: NT_<Nation Code>
    final _cuNcPattern = r"NT_(\w+)";
 
-   CustomerInfo({ this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt});
-   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt}){
+   CustomerInfo({ this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt, this.isd});
+   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt,required this.isd}){
       pk = genPk();
    }
 
@@ -41,10 +42,11 @@ class CustomerInfo{
       dob = info.dob;
       sex = info.sex;
       doe = info.doe;
+      isd = info.isd;
       nt = getNcFromPK();
    }
 
-   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt}";
+   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt, isd:$isd}";
    String genPk() => "${rPref[RecType.customer]}_${docType}_${nt}_$docID";
 
    bool get isProfileComplete => pk!=null && docID!=null && docType!=null && nt!=null;

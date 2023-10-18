@@ -109,6 +109,7 @@ class _NationDropDownState extends State<NationDropDown>{
       width: 280,
       child: DropdownButton<String?>(
             value: initValue,
+            alignment: Alignment.centerRight,
             elevation: 16,
             underline: Container(
               height: 0,
@@ -116,8 +117,12 @@ class _NationDropDownState extends State<NationDropDown>{
             items: naList.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                alignment: Alignment.centerRight,
-                child: Text(value,style: const TextStyle(fontSize: 12),),
+                alignment: Alignment.centerLeft,
+                child: Flexible(
+                  child:Container(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 2.0),
+                  child:Text(value,style: const TextStyle(fontSize: 12,),),
+              )),
               );
             }).toList(),
             onChanged: (val) {

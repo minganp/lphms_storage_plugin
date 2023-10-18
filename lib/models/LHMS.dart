@@ -34,6 +34,7 @@ class LHMS extends Model {
   final String? _sna;
   final String? _gna;
   final String? _isr;
+  final TemporalDate? _isd;
   final TemporalDate? _dob;
   final String? _sex;
   final String? _iUr;
@@ -119,7 +120,9 @@ class LHMS extends Model {
   String? get isr {
     return _isr;
   }
-
+  TemporalDate? get isd {
+    return _isd;
+  }
   TemporalDate? get dob {
     return _dob;
   }
@@ -236,9 +239,9 @@ class LHMS extends Model {
     return _updatedAt;
   }
   
-  const LHMS._internal({required this.id, required PK, required SK, GSI1, sna, gna, isr, dob, sex, iUr, doe, ctc, avl, nor, lat, lon, addr, rno, hsi, hso, nna, prov, dis, hna, ihs, hsp, clg, tst, cid, hsa, cod, mph, cac, hnl,createdAt, updatedAt}): _PK = PK, _SK = SK, _GSI1 = GSI1, _sna = sna, _gna = gna, _isr = isr, _dob = dob, _sex = sex, _iUr = iUr, _doe = doe, _ctc = ctc, _avl = avl, _nor = nor, _lat = lat, _lon = lon, _addr = addr, _rno = rno, _hsi = hsi, _hso = hso, _nna = nna, _prov = prov, _dis = dis, _hna = hna, _ihs = ihs, _hsp = hsp, _clg = clg, _tst = tst, _cid = cid, _hsa = hsa, _cod = cod, _mph = mph,_hnl = hnl, _cac = cac, _createdAt = createdAt, _updatedAt = updatedAt;
+  const LHMS._internal({required this.id, required PK, required SK, GSI1, sna, gna, isr, isd, dob, sex, iUr, doe, ctc, avl, nor, lat, lon, addr, rno, hsi, hso, nna, prov, dis, hna, ihs, hsp, clg, tst, cid, hsa, cod, mph, cac, hnl,createdAt, updatedAt}): _PK = PK, _SK = SK, _GSI1 = GSI1, _sna = sna, _gna = gna, _isr = isr, _dob = dob, _sex = sex, _iUr = iUr, _doe = doe, _ctc = ctc, _avl = avl, _nor = nor, _lat = lat, _lon = lon, _addr = addr, _rno = rno, _hsi = hsi, _hso = hso, _nna = nna, _prov = prov, _dis = dis, _hna = hna, _ihs = ihs, _hsp = hsp, _clg = clg, _tst = tst, _cid = cid, _hsa = hsa, _cod = cod, _mph = mph,_hnl = hnl, _cac = cac, _createdAt = createdAt, _updatedAt = updatedAt, _isd = isd;
   
-  factory LHMS({String? id, required String PK, required String SK, String? GSI1, String? sna, String? gna, String? isr, TemporalDate? dob, String? sex, String? iUr, TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
+  factory LHMS({String? id, required String PK, required String SK, String? GSI1, String? sna, String? gna, String? isr,TemporalDate? isd, TemporalDate? dob, String? sex, String? iUr, TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
     return LHMS._internal(
       id: id == null ? UUID.getUUID() : id,
       PK: PK,
@@ -247,6 +250,7 @@ class LHMS extends Model {
       sna: sna,
       gna: gna,
       isr: isr,
+      isd: isd,
       dob: dob,
       sex: sex,
       iUr: iUr,
@@ -290,6 +294,7 @@ class LHMS extends Model {
       _sna == other._sna &&
       _gna == other._gna &&
       _isr == other._isr &&
+        _isd == other._isd &&
       _dob == other._dob &&
       _sex == other._sex &&
       _iUr == other._iUr &&
@@ -333,6 +338,7 @@ class LHMS extends Model {
     buffer.write("sna=" + "$_sna" + ", ");
     buffer.write("gna=" + "$_gna" + ", ");
     buffer.write("isr=" + "$_isr" + ", ");
+    buffer.write("isd=" + (_isd != null ? _isd!.format() : "null") + ", ");
     buffer.write("dob=" + (_dob != null ? _dob!.format() : "null") + ", ");
     buffer.write("sex=" + "$_sex" + ", ");
     buffer.write("iUr=" + "$_iUr" + ", ");
@@ -367,7 +373,7 @@ class LHMS extends Model {
     return buffer.toString();
   }
   
-  LHMS copyWith({String? PK, String? SK, String? GSI1, String? sna, String? gna, String? isr, TemporalDate? dob, String? sex, String? iUr, TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
+  LHMS copyWith({String? PK, String? SK, String? GSI1, String? sna, String? gna, String? isr, TemporalDate? isd,TemporalDate? dob, String? sex, String? iUr, TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
     return LHMS._internal(
       id: id,
       PK: PK ?? this.PK,
@@ -376,6 +382,7 @@ class LHMS extends Model {
       sna: sna ?? this.sna,
       gna: gna ?? this.gna,
       isr: isr ?? this.isr,
+      isd: isd ?? this.isd,
       dob: dob ?? this.dob,
       sex: sex ?? this.sex,
       iUr: iUr ?? this.iUr,
@@ -414,6 +421,7 @@ class LHMS extends Model {
       _sna = json['sna'],
       _gna = json['gna'],
       _isr = json['isr'],
+      _isd = json['isd'] != null ? TemporalDate.fromString(json['isd']) : null,
       _dob = json['dob'] != null ? TemporalDate.fromString(json['dob']) : null,
       _sex = json['sex'],
       _iUr = json['iUr'],
@@ -446,7 +454,7 @@ class LHMS extends Model {
   
   Map<String, dynamic> toJson() {
     Map<String,dynamic> json = {};
-    json = {'id': id, 'PK': _PK, 'SK': _SK, 'GSI1': _GSI1, 'sna': _sna, 'gna': _gna, 'isr': _isr, 'dob': _dob?.format(), 'sex': _sex, 'iUr': _iUr, 'doe': _doe?.format(), 'ctc': _ctc, 'avl': _avl, 'nor': _nor, 'lat': _lat, 'lon': _lon, 'addr': _addr, 'rno': _rno, 'hsi': _hsi, 'hso': _hso, 'nna': _nna, 'prov': _prov, 'dis': _dis, 'hna': _hna, 'ihs': _ihs, 'hsp': _hsp, 'clg': _clg, 'tst': _tst, 'cid': _cid?.format(), 'hsa': _hsa, 'cod': _cod?.format(), 'mph': _mph, 'cac': _cac, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()};
+    json = {'id': id, 'PK': _PK, 'SK': _SK, 'GSI1': _GSI1, 'sna': _sna, 'gna': _gna, 'isr': _isr, 'isd':_isd?.format(),'dob': _dob?.format(), 'sex': _sex, 'iUr': _iUr, 'doe': _doe?.format(), 'ctc': _ctc, 'avl': _avl, 'nor': _nor, 'lat': _lat, 'lon': _lon, 'addr': _addr, 'rno': _rno, 'hsi': _hsi, 'hso': _hso, 'nna': _nna, 'prov': _prov, 'dis': _dis, 'hna': _hna, 'ihs': _ihs, 'hsp': _hsp, 'clg': _clg, 'tst': _tst, 'cid': _cid?.format(), 'hsa': _hsa, 'cod': _cod?.format(), 'mph': _mph, 'cac': _cac, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()};
     json.removeWhere((key, value) => value==null);
 
     return json;
@@ -454,7 +462,7 @@ class LHMS extends Model {
 
 
   Map<String, Object?> toMap() => {
-    'id': id, 'PK': _PK, 'SK': _SK, 'GSI1': _GSI1, 'sna': _sna, 'gna': _gna, 'isr': _isr, 'dob': _dob, 'sex': _sex, 'iUr': _iUr, 'doe': _doe, 'ctc': _ctc, 'avl': _avl, 'nor': _nor, 'lat': _lat, 'lon': _lon, 'addr': _addr, 'rno': _rno, 'hsi': _hsi, 'hso': _hso, 'nna': _nna, 'prov': _prov, 'dis': _dis, 'hna': _hna, 'ihs': _ihs, 'hsp': _hsp, 'clg': _clg, 'tst': _tst, 'cid': _cid, 'hsa': _hsa, 'cod': _cod, 'mph': _mph, 'cac': _cac, 'hnl':_hnl,'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'PK': _PK, 'SK': _SK, 'GSI1': _GSI1, 'sna': _sna, 'gna': _gna, 'isr': _isr, 'isd':_isd,'dob': _dob, 'sex': _sex, 'iUr': _iUr, 'doe': _doe, 'ctc': _ctc, 'avl': _avl, 'nor': _nor, 'lat': _lat, 'lon': _lon, 'addr': _addr, 'rno': _rno, 'hsi': _hsi, 'hso': _hso, 'nna': _nna, 'prov': _prov, 'dis': _dis, 'hna': _hna, 'ihs': _ihs, 'hsp': _hsp, 'clg': _clg, 'tst': _tst, 'cid': _cid, 'hsa': _hsa, 'cod': _cod, 'mph': _mph, 'cac': _cac, 'hnl':_hnl,'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryModelIdentifier<LHMSModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<LHMSModelIdentifier>();
@@ -465,6 +473,7 @@ class LHMS extends Model {
   static final QueryField SNA = QueryField(fieldName: "sna");
   static final QueryField GNA = QueryField(fieldName: "gna");
   static final QueryField ISR = QueryField(fieldName: "isr");
+  static final QueryField ISD = QueryField(fieldName: "isd");
   static final QueryField DOB = QueryField(fieldName: "dob");
   static final QueryField SEX = QueryField(fieldName: "sex");
   static final QueryField IUR = QueryField(fieldName: "iUr");
@@ -548,7 +557,11 @@ class LHMS extends Model {
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
-
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: LHMS.ISD,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.date),
+    ));
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: LHMS.DOB,
       isRequired: false,
