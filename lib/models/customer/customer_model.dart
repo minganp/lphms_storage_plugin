@@ -7,7 +7,6 @@ import '../../../models/LHMS.dart';
 import '../../../utility/record_prefix.dart';
 import '../change_log/changeLog.dart';
 import 'aws_auth_user_attr.dart';
-import 'cog_guest_model.dart';
 
 class CustomerInfo{
    String? pk;      //customerId
@@ -65,9 +64,9 @@ class CustomerInfo{
    String? getDocTypeFromPK() =>
        RegExp(_cuInfoPattern).firstMatch(pk!)?.group(1);
 
-   propFromGuestModel(CogGuestModel guestModel) {
-      if(guestModel.guestAttributes.isEmpty)return null;
-      for (var element in guestModel.guestAttributes) {
+   propFromGuestModel(List<AuthUserAttribute> attributes) {
+      if(attributes.isEmpty)return;
+      for (var element in attributes) {
          print("getAttributeKeyName:${element.userAttributeKey.key}:${element.value}");
          switch (element.userAttributeKey.key) {
             case GuestCogKey.pkCKey:
