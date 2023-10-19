@@ -4,9 +4,10 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 
 import '../../../models/LHMS.dart';
-import '../../../utility/position_enum.dart';
 import '../../../utility/record_prefix.dart';
 import '../change_log/changeLog.dart';
+import 'aws_auth_user_attr.dart';
+import 'cog_guest_model.dart';
 
 class CustomerInfo{
    String? pk;      //customerId
@@ -63,6 +64,75 @@ class CustomerInfo{
    //get doc type from pk
    String? getDocTypeFromPK() =>
        RegExp(_cuInfoPattern).firstMatch(pk!)?.group(1);
+
+   propFromGuestModel(CogGuestModel guestModel) {
+      if(guestModel.guestAttributes.isEmpty)return null;
+      for (var element in guestModel.guestAttributes) {
+         print("getAttributeKeyName:${element.userAttributeKey.key}:${element.value}");
+         switch (element.userAttributeKey.key) {
+            case GuestCogKey.pkCKey:
+               pk = element.value;
+               break;
+            case GuestCogKey.docId:
+               docID = element.value;
+               break;
+            case GuestCogKey.docType:
+               docType = element.value;
+               break;
+            case GuestCogKey.familyName:
+               sna = element.value;
+               break;
+            case GuestCogKey.givenName:
+               gna = element.value;
+               break;
+            case GuestCogKey.issuer:
+               isr = element.value;
+               break;
+            case GuestCogKey.birthdate:
+               dob = TemporalDate.fromString(element.value);
+               break;
+            case GuestCogKey.gender:
+               sex = element.value;
+               break;
+            case GuestCogKey.expireDate:
+               doe = TemporalDate.fromString(element.value);
+               break;
+            case GuestCogKey.issueDate:
+               isd = TemporalDate.fromString(element.value);
+               break;
+            case GuestCogKey.nationality:
+               nt = element.value;
+               break;
+            default:
+               continue;
+         }
+      }
+   }
+
+   List<AuthUserAttribute> toCogGuestAttributes() {
+      List<AuthUserAttribute> guestAttributes = [];
+
+      GuestCogKey.pkCKey;
+      final Map<AuthUserAttributeKey, dynamic> attributes = {
+         const CognitoUserAttributeKey.custom(GuestCogKey.pkCKey): pk,
+         const CognitoUserAttributeKey.custom(GuestCogKey.docId): docID,
+         const CognitoUserAttributeKey.custom(GuestCogKey.docType): docType,
+         AuthUserAttributeKey.familyName: sna!,
+         AuthUserAttributeKey.givenName: gna!,
+         const CognitoUserAttributeKey.custom(GuestCogKey.issuer): isr,
+         AuthUserAttributeKey.birthdate: dob.toString(),
+         AuthUserAttributeKey.gender: sex!,
+         const CognitoUserAttributeKey.custom(GuestCogKey.expireDate): doe.toString(),
+         const CognitoUserAttributeKey.custom(GuestCogKey.nationality): nt,
+         const CognitoUserAttributeKey.custom(GuestCogKey.cinPk): "${rPref[RecType.selfCheckInRec]}_${pk!}",
+         const CognitoUserAttributeKey.custom(GuestCogKey.issueDate): isd.toString()
+      };
+      for (var element in attributes.entries) {
+         guestAttributes.add(AuthUserAttribute(
+             userAttributeKey: element.key, value: element.value));
+      }
+      return guestAttributes;
+   }
 
    LHMS toLHMS(){
       LHMS lhms = LHMS(
