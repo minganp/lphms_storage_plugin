@@ -19,6 +19,7 @@ class CustomerInfo{
    String? sex;
    TemporalDate? doe;
    TemporalDate? isd; //issue date
+   List<String?>? iUr;
    String? nt; //nation
 
    //customer id : CU_<Document Type>_<Nation Code>_<Document ID>
@@ -27,8 +28,8 @@ class CustomerInfo{
    //nation Id: NT_<Nation Code>
    final _cuNcPattern = r"NT_(\w+)";
 
-   CustomerInfo({ this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt, this.isd});
-   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt,required this.isd}){
+   CustomerInfo({ this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt, this.isd,this.iUr});
+   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt,required this.isd,this.iUr}){
       pk = genPk();
    }
 
@@ -43,10 +44,11 @@ class CustomerInfo{
       sex = info.sex;
       doe = info.doe;
       isd = info.isd;
+      iUr = info.iUr;
       nt = getNcFromPK();
    }
 
-   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt, isd:$isd}";
+   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt, isd:$isd, iUr: ${iUr.toString()}";
    String genPk() => "${rPref[RecType.customer]}_${docType}_${nt}_$docID";
 
    bool get isProfileComplete => pk!=null && docID!=null && docType!=null && nt!=null;
@@ -135,7 +137,7 @@ class CustomerInfo{
 
    LHMS toLHMS(){
       LHMS lhms = LHMS(
-         PK: genPk(), SK: genPk(), sna: sna, gna: gna, isr: isr, dob: dob, sex: sex, doe: doe,nna: nt
+         PK: genPk(), SK: genPk(), sna: sna, gna: gna, isr: isr, dob: dob, sex: sex, doe: doe,nna: nt, iUr: iUr
       );
       return lhms;
    }

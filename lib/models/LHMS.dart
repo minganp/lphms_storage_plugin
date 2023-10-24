@@ -37,7 +37,7 @@ class LHMS extends Model {
   final TemporalDate? _isd;
   final TemporalDate? _dob;
   final String? _sex;
-  final String? _iUr;
+  final List<String?>? _iUr;
   final TemporalDate? _doe;
   final String? _ctc;
   final int? _avl;
@@ -131,7 +131,7 @@ class LHMS extends Model {
     return _sex;
   }
   
-  String? get iUr {
+  List<String?>? get iUr {
     return _iUr;
   }
   
@@ -241,7 +241,7 @@ class LHMS extends Model {
   
   const LHMS._internal({required this.id, required PK, required SK, GSI1, sna, gna, isr, isd, dob, sex, iUr, doe, ctc, avl, nor, lat, lon, addr, rno, hsi, hso, nna, prov, dis, hna, ihs, hsp, clg, tst, cid, hsa, cod, mph, cac, hnl,createdAt, updatedAt}): _PK = PK, _SK = SK, _GSI1 = GSI1, _sna = sna, _gna = gna, _isr = isr, _dob = dob, _sex = sex, _iUr = iUr, _doe = doe, _ctc = ctc, _avl = avl, _nor = nor, _lat = lat, _lon = lon, _addr = addr, _rno = rno, _hsi = hsi, _hso = hso, _nna = nna, _prov = prov, _dis = dis, _hna = hna, _ihs = ihs, _hsp = hsp, _clg = clg, _tst = tst, _cid = cid, _hsa = hsa, _cod = cod, _mph = mph,_hnl = hnl, _cac = cac, _createdAt = createdAt, _updatedAt = updatedAt, _isd = isd;
   
-  factory LHMS({String? id, required String PK, required String SK, String? GSI1, String? sna, String? gna, String? isr,TemporalDate? isd, TemporalDate? dob, String? sex, String? iUr, TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
+  factory LHMS({String? id, required String PK, required String SK, String? GSI1, String? sna, String? gna, String? isr,TemporalDate? isd, TemporalDate? dob, String? sex, List<String?>? iUr, TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
     return LHMS._internal(
       id: id == null ? UUID.getUUID() : id,
       PK: PK,
@@ -276,7 +276,9 @@ class LHMS extends Model {
       hsa: hsa,
       cod: cod,
       mph: mph,
-      cac: cac);
+      cac: cac,
+      hnl: hnl
+    );
   }
   
   bool equals(Object other) {
@@ -424,7 +426,7 @@ class LHMS extends Model {
       _isd = json['isd'] != null ? TemporalDate.fromString(json['isd']) : null,
       _dob = json['dob'] != null ? TemporalDate.fromString(json['dob']) : null,
       _sex = json['sex'],
-      _iUr = json['iUr'],
+      _iUr = json['iUr'] as List<String?>?,
       _doe = json['doe'] != null ? TemporalDate.fromString(json['doe']) : null,
       _ctc = json['ctc'],
       _avl = (json['avl'] as num?)?.toInt(),
