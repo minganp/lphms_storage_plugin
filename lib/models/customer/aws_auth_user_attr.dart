@@ -6,6 +6,7 @@ extension CK on CustomerKeyType {
 }
  */
 class GuestCogKey {
+  static const String sub = "sub";
   static const String familyName = "family_name";
   static const String givenName = "given_name";
   static const String birthdate = "birthdate";
@@ -18,6 +19,9 @@ class GuestCogKey {
   static const String expireDate = "custom:issueedate";
   static const String issueDate = "custom:issuedate";
   static const String nationality = "custom:nationality";
+  static const String iUrP = "custom:iUrP";
+  static const String iUrL = "custom:iUrL";
+  static const String iUrO = 'custom:iUrO';
   /*
     cognito already has a guest attribute:
      id

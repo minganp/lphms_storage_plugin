@@ -9,6 +9,7 @@ import '../change_log/changeLog.dart';
 import 'aws_auth_user_attr.dart';
 
 class CustomerInfo{
+   String? sub;     //cognito user id. No attribute in LHMS
    String? pk;      //customerId
    String? docID;
    String? docType;
@@ -19,7 +20,9 @@ class CustomerInfo{
    String? sex;
    TemporalDate? doe;
    TemporalDate? isd; //issue date
-   List<String?>? iUr;
+   String? iUrP; //passport picture url in s3
+   String? iUrL; //ID picture of Laos url in s3
+   String? iUrO; //Other id document picture in s3
    String? nt; //nation
 
    //customer id : CU_<Document Type>_<Nation Code>_<Document ID>
@@ -28,8 +31,8 @@ class CustomerInfo{
    //nation Id: NT_<Nation Code>
    final _cuNcPattern = r"NT_(\w+)";
 
-   CustomerInfo({ this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt, this.isd,this.iUr});
-   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt,required this.isd,this.iUr}){
+   CustomerInfo({ this.sub,this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt, this.isd,this.iUrP,this.iUrL,this.iUrO});
+   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt,required this.isd,this.iUrP,this.iUrL,this.iUrO,this.sub}){
       pk = genPk();
    }
 
@@ -44,15 +47,17 @@ class CustomerInfo{
       sex = info.sex;
       doe = info.doe;
       isd = info.isd;
-      iUr = info.iUr;
+      iUrP = info.iUrP;
+      iUrL = info.iUrL;
+      iUrO = info.iUrO;
       nt = getNcFromPK();
    }
 
-   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt, isd:$isd, iUr: ${iUr.toString()}";
+   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt, isd:$isd, iUrP: ${iUrP.toString()}, sub: $sub}";
    String genPk() => "${rPref[RecType.customer]}_${docType}_${nt}_$docID";
 
-   bool get isProfileComplete => pk!=null && docID!=null && docType!=null && nt!=null;
-   bool get isProfileFullyComplete => pk!=null && docID!=null && docType!=null && nt!=null;
+   bool get isProfileComplete => pk!=null && docID!=null && docType!=null && nt!=null && (iUrO!=null || iUrL !=null || iUrP !=null);
+   bool get isProfileFullyComplete => pk!=null && docID!=null && docType!=null && nt!=null && (iUrO!=null || iUrL !=null || iUrP !=null);
 
    //get doc id from pk
    String? getDocIdFromPK() =>
@@ -71,6 +76,9 @@ class CustomerInfo{
       for (var element in attributes) {
          print("getAttributeKeyName:${element.userAttributeKey.key}:${element.value}");
          switch (element.userAttributeKey.key) {
+            case GuestCogKey.sub:
+               sub= element.value;
+               break;
             case GuestCogKey.pkCKey:
                pk = element.value;
                break;
@@ -104,6 +112,15 @@ class CustomerInfo{
             case GuestCogKey.nationality:
                nt = element.value;
                break;
+            case GuestCogKey.iUrO:
+               iUrO = element.value;
+               break;
+            case GuestCogKey.iUrP:
+               iUrP = element.value;
+               break;
+            case GuestCogKey.iUrL:
+               iUrL = element.value;
+               break;
             default:
                continue;
          }
@@ -120,6 +137,7 @@ class CustomerInfo{
          const CognitoUserAttributeKey.custom(GuestCogKey.docType): docType,
          AuthUserAttributeKey.familyName: sna!,
          AuthUserAttributeKey.givenName: gna!,
+         AuthUserAttributeKey.sub: sub!,
          const CognitoUserAttributeKey.custom(GuestCogKey.issuer): isr,
          AuthUserAttributeKey.birthdate: dob.toString(),
          AuthUserAttributeKey.gender: sex!,
@@ -137,7 +155,7 @@ class CustomerInfo{
 
    LHMS toLHMS(){
       LHMS lhms = LHMS(
-         PK: genPk(), SK: genPk(), sna: sna, gna: gna, isr: isr, dob: dob, sex: sex, doe: doe,nna: nt, iUr: iUr
+         PK: genPk(), SK: genPk(), sna: sna, gna: gna, isr: isr, dob: dob, sex: sex, doe: doe,nna: nt, iUrP: iUrP,iUrO: iUrO,iUrL: iUrL
       );
       return lhms;
    }

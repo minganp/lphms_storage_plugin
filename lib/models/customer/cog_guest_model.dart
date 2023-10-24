@@ -53,13 +53,17 @@ extension GuestAttribute on CustomerInfo {
       const CognitoUserAttributeKey.custom(GuestCogKey.docType): docType,
       AuthUserAttributeKey.familyName: sna!,
       AuthUserAttributeKey.givenName: gna!,
+      AuthUserAttributeKey.sub: sub!,
       const CognitoUserAttributeKey.custom(GuestCogKey.issuer): isr,
       AuthUserAttributeKey.birthdate: dob.toString(),
       AuthUserAttributeKey.gender: sex!,
       const CognitoUserAttributeKey.custom(GuestCogKey.expireDate): doe.toString(),
       const CognitoUserAttributeKey.custom(GuestCogKey.nationality): nt,
       const CognitoUserAttributeKey.custom(GuestCogKey.cinPk): "${rPref[RecType.selfCheckInRec]}_${pk!}",
-      const CognitoUserAttributeKey.custom(GuestCogKey.issueDate): isd.toString()
+      const CognitoUserAttributeKey.custom(GuestCogKey.issueDate): isd.toString(),
+      const CognitoUserAttributeKey.custom(GuestCogKey.iUrP): iUrP,
+      const CognitoUserAttributeKey.custom(GuestCogKey.iUrL): iUrL,
+      const CognitoUserAttributeKey.custom(GuestCogKey.iUrO): iUrO,
     };
     for (var element in attributes.entries) {
       guestAttributes.add(AuthUserAttribute(
@@ -73,6 +77,9 @@ extension GuestAttribute on CustomerInfo {
     for (var element in guestModel.guestAttributes) {
       print("getAttributeKeyName:${element.userAttributeKey.key}:${element.value}");
       switch (element.userAttributeKey.key) {
+        case GuestCogKey.sub:
+          sub = element.value;
+          break;
         case GuestCogKey.pkCKey:
           pk = element.value;
           break;
@@ -105,6 +112,15 @@ extension GuestAttribute on CustomerInfo {
             break;
         case GuestCogKey.nationality:
           nt = element.value;
+          break;
+        case GuestCogKey.iUrP:
+          iUrP = element.value;
+          break;
+        case GuestCogKey.iUrO:
+          iUrO = element.value;
+          break;
+        case GuestCogKey.iUrL:
+          iUrL = element.value;
           break;
         default:
           continue;

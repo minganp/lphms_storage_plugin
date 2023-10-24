@@ -38,6 +38,9 @@ class LHMS extends Model {
   final TemporalDate? _dob;
   final String? _sex;
   final List<String?>? _iUr;
+  final String? _iUrP;  //url of passport picture
+  final String? _iUrL;  // url of ID of Laos
+  final String? _iUrO;  // url of other document picture
   final TemporalDate? _doe;
   final String? _ctc;
   final int? _avl;
@@ -134,7 +137,20 @@ class LHMS extends Model {
   List<String?>? get iUr {
     return _iUr;
   }
-  
+
+  String? get iUrP {
+    return _iUrP;
+  }
+
+  String? get iUrO {
+    return _iUrO;
+  }
+
+  String? get iUrL {
+    return _iUrL;
+  }
+
+
   TemporalDate? get doe {
     return _doe;
   }
@@ -239,9 +255,9 @@ class LHMS extends Model {
     return _updatedAt;
   }
   
-  const LHMS._internal({required this.id, required PK, required SK, GSI1, sna, gna, isr, isd, dob, sex, iUr, doe, ctc, avl, nor, lat, lon, addr, rno, hsi, hso, nna, prov, dis, hna, ihs, hsp, clg, tst, cid, hsa, cod, mph, cac, hnl,createdAt, updatedAt}): _PK = PK, _SK = SK, _GSI1 = GSI1, _sna = sna, _gna = gna, _isr = isr, _dob = dob, _sex = sex, _iUr = iUr, _doe = doe, _ctc = ctc, _avl = avl, _nor = nor, _lat = lat, _lon = lon, _addr = addr, _rno = rno, _hsi = hsi, _hso = hso, _nna = nna, _prov = prov, _dis = dis, _hna = hna, _ihs = ihs, _hsp = hsp, _clg = clg, _tst = tst, _cid = cid, _hsa = hsa, _cod = cod, _mph = mph,_hnl = hnl, _cac = cac, _createdAt = createdAt, _updatedAt = updatedAt, _isd = isd;
+  const LHMS._internal({required this.id, required PK, required SK, GSI1, sna, gna, isr, isd, dob, sex, iUr, iUrP, iUrO, iUrL,doe, ctc, avl, nor, lat, lon, addr, rno, hsi, hso, nna, prov, dis, hna, ihs, hsp, clg, tst, cid, hsa, cod, mph, cac, hnl,createdAt, updatedAt}): _PK = PK, _SK = SK, _GSI1 = GSI1, _sna = sna, _gna = gna, _isr = isr, _dob = dob, _sex = sex, _iUr = iUr, _doe = doe, _ctc = ctc, _avl = avl, _nor = nor, _lat = lat, _lon = lon, _addr = addr, _rno = rno, _hsi = hsi, _hso = hso, _nna = nna, _prov = prov, _dis = dis, _hna = hna, _ihs = ihs, _hsp = hsp, _clg = clg, _tst = tst, _cid = cid, _hsa = hsa, _cod = cod, _mph = mph,_hnl = hnl, _cac = cac, _createdAt = createdAt, _updatedAt = updatedAt, _isd = isd, _iUrP = iUrP, _iUrL = iUrL, _iUrO = iUrO;
   
-  factory LHMS({String? id, required String PK, required String SK, String? GSI1, String? sna, String? gna, String? isr,TemporalDate? isd, TemporalDate? dob, String? sex, List<String?>? iUr, TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
+  factory LHMS({String? id, required String PK, required String SK, String? GSI1, String? sna, String? gna, String? isr,TemporalDate? isd, TemporalDate? dob, String? sex, List<String?>? iUr, String? iUrP, String? iUrL, String? iUrO,TemporalDate? doe, String? ctc, int? avl, int? nor, double? lat, double? lon, String? addr, String? rno, String? hsi, String? hso, String? nna, String? prov, String? dis, String? hna, int? ihs, String? hsp, String? clg, String? tst, TemporalDateTime? cid, int? hsa, TemporalDateTime? cod, String? mph, String? cac, List<String?>? hnl}) {
     return LHMS._internal(
       id: id == null ? UUID.getUUID() : id,
       PK: PK,
@@ -254,6 +270,9 @@ class LHMS extends Model {
       dob: dob,
       sex: sex,
       iUr: iUr,
+      iUrL: iUrL,
+      iUrO: iUrO,
+      iUrP: iUrP,
       doe: doe,
       ctc: ctc,
       avl: avl,
@@ -427,6 +446,9 @@ class LHMS extends Model {
       _dob = json['dob'] != null ? TemporalDate.fromString(json['dob']) : null,
       _sex = json['sex'],
       _iUr = json['iUr'] as List<String?>?,
+      _iUrL = json['iUrL'],
+      _iUrP = json['iUrP'],
+      _iUrO = json['iUrO'],
       _doe = json['doe'] != null ? TemporalDate.fromString(json['doe']) : null,
       _ctc = json['ctc'],
       _avl = (json['avl'] as num?)?.toInt(),
@@ -464,7 +486,7 @@ class LHMS extends Model {
 
 
   Map<String, Object?> toMap() => {
-    'id': id, 'PK': _PK, 'SK': _SK, 'GSI1': _GSI1, 'sna': _sna, 'gna': _gna, 'isr': _isr, 'isd':_isd,'dob': _dob, 'sex': _sex, 'iUr': _iUr, 'doe': _doe, 'ctc': _ctc, 'avl': _avl, 'nor': _nor, 'lat': _lat, 'lon': _lon, 'addr': _addr, 'rno': _rno, 'hsi': _hsi, 'hso': _hso, 'nna': _nna, 'prov': _prov, 'dis': _dis, 'hna': _hna, 'ihs': _ihs, 'hsp': _hsp, 'clg': _clg, 'tst': _tst, 'cid': _cid, 'hsa': _hsa, 'cod': _cod, 'mph': _mph, 'cac': _cac, 'hnl':_hnl,'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id, 'PK': _PK, 'SK': _SK, 'GSI1': _GSI1, 'sna': _sna, 'gna': _gna, 'isr': _isr, 'isd':_isd,'dob': _dob, 'sex': _sex, 'iUr': _iUr, 'iUrL':_iUrL,'iUrP':_iUrP,'iUrO':_iUrO,'doe': _doe, 'ctc': _ctc, 'avl': _avl, 'nor': _nor, 'lat': _lat, 'lon': _lon, 'addr': _addr, 'rno': _rno, 'hsi': _hsi, 'hso': _hso, 'nna': _nna, 'prov': _prov, 'dis': _dis, 'hna': _hna, 'ihs': _ihs, 'hsp': _hsp, 'clg': _clg, 'tst': _tst, 'cid': _cid, 'hsa': _hsa, 'cod': _cod, 'mph': _mph, 'cac': _cac, 'hnl':_hnl,'createdAt': _createdAt, 'updatedAt': _updatedAt
   };
 
   static final QueryModelIdentifier<LHMSModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<LHMSModelIdentifier>();
@@ -479,6 +501,9 @@ class LHMS extends Model {
   static final QueryField DOB = QueryField(fieldName: "dob");
   static final QueryField SEX = QueryField(fieldName: "sex");
   static final QueryField IUR = QueryField(fieldName: "iUr");
+  static final QueryField IURP = QueryField(fieldName: "iUrP");
+  static final QueryField IURO = QueryField(fieldName: "iUrO");
+  static final QueryField IURL = QueryField(fieldName: "iUrL");
   static final QueryField DOE = QueryField(fieldName: "doe");
   static final QueryField CTC = QueryField(fieldName: "ctc");
   static final QueryField AVL = QueryField(fieldName: "avl");
@@ -582,7 +607,23 @@ class LHMS extends Model {
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
-    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: LHMS.IURP,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: LHMS.IURL,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: LHMS.IURO,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: LHMS.DOE,
       isRequired: false,
