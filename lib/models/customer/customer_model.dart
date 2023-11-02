@@ -78,6 +78,7 @@ class CustomerInfo{
          switch (element.userAttributeKey.key) {
             case GuestCogKey.sub:
                sub= element.value;
+               print('set sub: $sub');
                break;
             case GuestCogKey.pkCKey:
                pk = element.value;
