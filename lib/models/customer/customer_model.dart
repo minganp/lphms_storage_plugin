@@ -32,8 +32,9 @@ class CustomerInfo{
    final _cuNcPattern = r"NT_(\w+)";
 
    CustomerInfo({ this.sub,this.pk,this.docID, this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,this.nt, this.isd,this.iUrP,this.iUrL,this.iUrO});
-   CustomerInfo.profile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt,required this.isd,this.iUrP,this.iUrL,this.iUrO,this.sub}){
+   CustomerInfo.createFromProfile({ required this.docID, required this.docType, this.sna, this.gna, this.isr, this.dob, this.sex, this.doe,required this.nt,required this.isd,String? url,this.sub}){
       pk = genPk();
+      docImgUrl = url;
    }
 
    CustomerInfo.fromLHMS(LHMS info){
@@ -53,7 +54,7 @@ class CustomerInfo{
       nt = getNcFromPK();
    }
 
-   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt, isd:$isd, iUrP: ${iUrP.toString()}, sub: $sub}";
+   String toJsonString() => "{pk:$pk,sna:$sna,gna:$gna,isr:$isr,dob:$dob,sex:$sex,doe:$doe,nt:$nt, isd:$isd, iur: ${iUrP.toString()}, sub: $sub,docType: $docType,docID: $docID}";
    String genPk() => "${rPref[RecType.customer]}_${docType}_${nt}_$docID";
 
    bool get isProfileComplete => pk!=null && docID!=null && docType!=null && nt!=null && (iUrO!=null || iUrL !=null || iUrP !=null);
@@ -145,15 +146,48 @@ class CustomerInfo{
          const CognitoUserAttributeKey.custom(GuestCogKey.expireDate): doe.toString(),
          const CognitoUserAttributeKey.custom(GuestCogKey.nationality): nt,
          const CognitoUserAttributeKey.custom(GuestCogKey.cinPk): "${rPref[RecType.selfCheckInRec]}_${pk!}",
-         const CognitoUserAttributeKey.custom(GuestCogKey.issueDate): isd.toString()
+         const CognitoUserAttributeKey.custom(GuestCogKey.issueDate): isd.toString(),
+         const CognitoUserAttributeKey.custom(GuestCogKey.iUrO): iUrO,
+          const CognitoUserAttributeKey.custom(GuestCogKey.iUrP): iUrP,
+          const CognitoUserAttributeKey.custom(GuestCogKey.iUrL): iUrL,
       };
       for (var element in attributes.entries) {
-         guestAttributes.add(AuthUserAttribute(
-             userAttributeKey: element.key, value: element.value));
+         if(element.value!=null) {
+            guestAttributes.add(AuthUserAttribute(
+                userAttributeKey: element.key, value: element.value));
+         }
       }
       return guestAttributes;
    }
 
+  String? get urlByDocType{
+
+      switch(docType){
+         case "P":
+            return iUrP;
+         case "I":
+            return iUrL;
+         case "O":
+            return iUrO;
+         default:
+            return null;
+      }
+   }
+   set docImgUrl(String? url){
+      switch(docType){
+         case "P":
+            iUrP = url;
+            break;
+         case "I":
+            iUrL = url;
+            break;
+         case "O":
+            iUrO = url;
+            break;
+         default:
+            break;
+      }
+   }
    LHMS toLHMS(){
       LHMS lhms = LHMS(
          PK: genPk(), SK: genPk(), sna: sna, gna: gna, isr: isr, dob: dob, sex: sex, doe: doe,nna: nt, iUrP: iUrP,iUrO: iUrO,iUrL: iUrL
